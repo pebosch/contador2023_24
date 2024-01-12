@@ -10,6 +10,21 @@ class HomeScreen extends StatefulWidget{
 class _HomeScreenState extends State<HomeScreen> {
   int contador = 0;
 
+  void incrementar(){
+    contador++;
+    setState(() {});
+  }
+
+  void reset(){
+    contador = 0;
+    setState(() {});
+  }
+
+  void decrementar(){
+    contador--;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -32,44 +47,49 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FloatingActionButton(
-              child: const Text('-1'),
-              //child: const Text('Añadir'),
-              onPressed: () => setState(() => contador--)
-            ),
-
-            //const SizedBox( width: 20,),
-
-            FloatingActionButton(
-              child: const Text('RESET'),
-              //child: const Text('Añadir'),
-              onPressed: () {
-                print('Acabo de pulsar el botón');
-                contador=0;
-                setState(() {
-                });
-                print('$contador');
-            },),
-
-            //const SizedBox( width: 20,),
-
-            FloatingActionButton(
-              child: const Icon( Icons.add),
-              //child: const Text('Añadir'),
-              onPressed: () {
-                print('Acabo de pulsar el botón');
-                contador++;
-                setState(() {
-                });
-                print('$contador');
-            },),
-
-            
-          ],
+        floatingActionButton: CustomFloatingActionButton(
+          incrementarFn: incrementar,
+          resetFn: reset,
+          decrementarFn: decrementar,
         ),
+    );
+  }
+}
+
+class CustomFloatingActionButton extends StatelessWidget {
+
+  final Function incrementarFn;
+  final Function resetFn;
+  final Function decrementarFn;
+
+  const CustomFloatingActionButton({
+    super.key, required this.incrementarFn, required this.resetFn, required this.decrementarFn,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        FloatingActionButton(
+          child: const Text('-1'),
+          //child: const Text('Añadir'),
+            onPressed: () => decrementarFn()),
+
+        //const SizedBox( width: 20,),
+
+        FloatingActionButton(
+          child: const Text('RESET'),
+          //child: const Text('Añadir'),
+            onPressed: () => resetFn()),
+
+        //const SizedBox( width: 20,),
+
+        FloatingActionButton(
+          child: const Icon( Icons.add),
+          //child: const Text('Añadir'),
+          onPressed: () => incrementarFn()),
+      ],
     );
   }
 }
